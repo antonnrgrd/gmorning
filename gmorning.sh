@@ -125,14 +125,15 @@ function get_yahoo_finance_active_tickers()
     third_ticker_pct_change=$(echo "$active_tickers_perct_change" | sed '3q;d')
     fourth_ticker_pct_change=$(echo "$active_tickers_perct_change" | sed '4q;d')
     fith_ticker_pct_change=$(echo "$active_tickers_perct_change" | sed '5q;d')
-    #echo $(compute_padding "$(echo "$active_tickers_value" | sed '2q;d' | xargs)" )
-    #echo $(compute_padding "3656.13" )
-    printf "%s %s %s\n" "TICKER     VALUE          LAST VALUE CHANGE"
-    printf "%s  %$(compute_padding "$(echo "$active_tickers_value" | sed '1q;d')" )s %13s\n" "$(echo "$active_tickers" | sed '1q;d')"  "$(echo "$active_tickers_value" | sed '1q;d')" "$(map_percentchange_to_color "$first_ticker_pct_change")" 
-    printf "%s  %$(compute_padding "$(echo "$active_tickers_value" | sed '2q;d')" )s %12s\n" "$(echo "$active_tickers" | sed '2q;d')" "$(echo "$active_tickers_value" | sed '2q;d')" "$(map_percentchange_to_color "$second_ticker_pct_change")" 
-    printf "%s  %$(compute_padding "$(echo "$active_tickers_value" | sed '3q;d')" )s %12s\n" "$(echo "$active_tickers" | sed '3q;d')" "$(echo "$active_tickers_value" | sed '3q;d')" "$(map_percentchange_to_color "$third_ticker_pct_change")"
-    printf "%s  %$(compute_padding "$(echo "$active_tickers_value" | sed '4q;d')" )s %12s\n" "$(echo "$active_tickers" | sed '4q;d')" "$(echo "$active_tickers_value" | sed '4q;d')" "$(map_percentchange_to_color "$fourth_ticker_pct_change")"
-    printf "%s  %$(compute_padding "$(echo "$active_tickers_value" | sed '5q;d')" )s %12s\n" "$(echo "$active_tickers" | sed '5q;d')" "$(echo "$active_tickers_value" | sed '5q;d')" "$(map_percentchange_to_color "$fith_ticker_pct_change")"
+
+    truncate -s 0 "/etc/gmorning/tickers.txt"
+    echo  "TICKER|VALUE|LAST VALUE CHANGE" >> "/etc/gmorning/tickers.txt"
+    echo "$(echo "$active_tickers" | sed '1q;d')|$(echo "$active_tickers_value" | sed '1q;d')|$(map_percentchange_to_color "$first_ticker_pct_change")" >> "/etc/gmorning/tickers.txt"
+    echo "$(echo "$active_tickers" | sed '2q;d')|$(echo "$active_tickers_value" | sed '2q;d')|$(map_percentchange_to_color "$second_ticker_pct_change")" >> "/etc/gmorning/tickers.txt"
+    echo "$(echo "$active_tickers" | sed '3q;d')|$(echo "$active_tickers_value" | sed '3q;d')|$(map_percentchange_to_color "$third_ticker_pct_change")" >> "/etc/gmorning/tickers.txt"
+    echo "$(echo "$active_tickers" | sed '4q;d')|$(echo "$active_tickers_value" | sed '4q;d')|$(map_percentchange_to_color "$fourth_ticker_pct_change")" >> "/etc/gmorning/tickers.txt"
+    echo "$(echo "$active_tickers" | sed '5q;d')|$(echo "$active_tickers_value" | sed '5q;d')|$(map_percentchange_to_color "$fith_ticker_pct_change")" >> "/etc/gmorning/tickers.txt"
+    column "/etc/gmorning/tickers.txt" -t -s "|"
 }
 
 function map_percentchange_to_color()
