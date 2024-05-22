@@ -169,7 +169,7 @@ function get_time_greeting()
 
 function get_current_news()
 {
-    news=$(curl -sA "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0" https://edition.cnn.com/  | grep -Eo "<span class=\"container__headline-text\" data-editable=\"headline\">[^<]+" | sed -n '20,26p' | cut -c 65-) # | sed -n '20,26p' | cut -c 65-
+    news=$(curl -sA "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0" https://edition.cnn.com/  | grep -Eo "<span class=\"container__headline-text\" data-editable=\"headline\">[^<]+" | sed -n '21,28p' | cut -c 65-) # | sed -n '20,26p' | cut -c 65-
     echo "$news"
 }
 
