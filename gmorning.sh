@@ -26,48 +26,6 @@ LIGHT_CYAN=`tput setaf 14`
 WHITE=`tput setaf 15 bold smul`
 NOCOLOR=`tput init`
 
-
-
-function compute_padding()
-{
-    if [ $(expr length "$1") -eq "4" ]; then
-	echo "9"
-    elif [ $(expr length "$1") -eq "5" ]; then
-	echo "11"
-    elif [ $(expr length "$1") -eq "6" ]; then
-	echo "11"
-    elif [ $(expr length "$1") -eq "7" ]; then
-	echo "14"
-    elif [ $(expr length "$1") -eq "8" ]; then
-	echo "15"
-    fi
-    
-    #min_padding=9
-    #addtional_padding=$((($(expr length "$1") - 4 )))
-    #total_padding=$((min_padding + addtional_padding)) 
-    #echo "$total_padding"
-}
-
-function compute_padding_len()
-{
-    if [ $(expr length "$1") -eq "4" ]; then
-	echo "4"
-    elif [ $(expr length "$1") -eq "5" ]; then
-	echo "5"
-    elif [ $(expr length "$1") -eq "6" ]; then
-	echo "6"
-    elif [ $(expr length "$1") -eq "7" ]; then
-	echo "7"
-    elif [ $(expr length "$1") -eq "8" ]; then
-	echo "8"
-    fi
-    
-    #min_padding=9
-    #addtional_padding=$((($(expr length "$1") - 4 )))
-    #total_padding=$((min_padding + addtional_padding)) 
-    #echo "$total_padding"
-}
-
 function color_test(){
     echo  "${BLACK}black, ${RED}red, ${GREEN}green"
     echo  "${ORANGE_BROWN}orange_brown, ${BLUE}blue, ${PURPLE}purple"
@@ -112,8 +70,7 @@ function map_weather_to_color()
     fi
 }
 
-#min pad = 9 - assumes it is always a floating number
-# two decimals of floting precision
+
 function get_yahoo_finance_active_tickers()
 {
     yahoo_finance=$(curl -sA "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0" https://finance.yahoo.com/ | grep -Eo "Trending Tickers.+-- HTML_TAG_END")
@@ -169,7 +126,7 @@ function get_time_greeting()
 
 function get_current_news()
 {
-    news=$(curl -sA "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0" https://edition.cnn.com/  | grep -Eo "<span class=\"container__headline-text\" data-editable=\"headline\">[^<]+" | sed -n '21,28p' | cut -c 65-) # | sed -n '20,26p' | cut -c 65-
+    news=$(curl -sA "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0" https://edition.cnn.com/  | grep -Eo "<span class=\"container__headline-text\" data-editable=\"headline\">[^<]+" | sed -n '21,28p' | cut -c 65-) 
     echo "$news"
 }
 
@@ -178,7 +135,6 @@ function gmorning ()
     if [ -d "/etc/gmorning/" ]; then
 	city_url=$(cat /etc/gmorning/city_url.txt)
 	city_txt=$(curl -sA "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0" "$city_url")
-	#city_weather=$()
 	echo "Good $(get_time_greeting), $(whoami). Today's weather is currently $(map_weather_to_color "$city_txt"), with a temperature of $(extract_temperature "$city_txt") celsius"
 	echo "Current major headlines are:"
 	echo "--------------------------------"
@@ -195,7 +151,5 @@ function gmorning ()
 
 
 gmorning
-#color_test
-#compute_padding "1.23"
-#compute_padding "12.23"
-#compute_padding "134.23"
+#This will cause a prompt that warns the user when attempting to close the terminal, but this was the most elegant solution to prevent the terminal from automatically closing once the process terminates
+$SHELL
