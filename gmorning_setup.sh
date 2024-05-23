@@ -10,10 +10,9 @@ function gmorning_setup_script ()
     echo "$url" > "/etc/gmorning/city_url.txt"
     chmod 755 "/etc/gmorning/city_url.txt"
     touch "/etc/gmorning/tickers.txt" ; chmod 766 "/etc/gmorning/tickers.txt"
-    sudo -u "$user" crontab -l > current_user_cron
-    sudo -u "$user" echo "@reboot gnome-terminal -- \"gmorning.sh\"" >> current_user_cron
-    sudo -u "$user" crontab current_user_cron
-    sudo -u "$user" rm -f current_user_cron
+    #A hack to make the script setup idempotent - remove the line in .profile that specifies to run the script before adding it 
+    grep -v "gnome-terminal -- \"gmorning.sh\""  "/home/$user/.profile" > tmpfile && mv tmpfile "/home/$user/.profile"
+    sudo echo "gnome-terminal -- \"gmorning.sh\"" >> "/home/$user/.profile"
 }
 
 gmorning_setup_script
