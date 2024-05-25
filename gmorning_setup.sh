@@ -13,6 +13,7 @@ function gmorning_setup_script ()
     #A hack to make the script setup idempotent - remove the line in .profile that specifies to run the script before adding it 
     grep -v "gnome-terminal -- \"gmorning.sh\""  "/home/$user/.profile" > tmpfile && mv tmpfile "/home/$user/.profile"
     sudo echo "gnome-terminal -- \"gmorning.sh\"" >> "/home/$user/.profile"
+    chmod +x gmorning.sh ; cp gmorning.sh /bin/
 }
 
 gmorning_setup_script
