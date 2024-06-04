@@ -1,15 +1,6 @@
 #! /bin/bash
-# grep -Eo "Trending Tickers.+-- HTML_TAG_END" index.html | grep -Eo "data-symbol=[\"A-Z]+" | cut -c 13- | cut -c 2- | rev | cut -c 2- | rev | sed '2d;3d;5d;6d;8d;9d;11d;12d;14d;15d'
 
-# trendingers tickers current price
-# grep -Eo "Trending Tickers.+-- HTML_TAG_END" index.html | grep -Eo "class=\"svelte-86injt\">[0-9,\.]+" | cut -c 23-
-
-#trending tickers price change
-# grep -Eo "Trending Tickers.+-- HTML_TAG_END" index.html | grep -Eo "class=\"txt-positive svelte-86injt\">\([%0-9\.\+\-]+|class=\"txt-negative svelte-86injt\">\([%0-9\.\+\-]+" | cut -c 37-
-
-# imporved regex  curl -sA "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0" https://edition.cnn.com/  | grep -En "<span class=\"container__headline-text\" data-editable=\"headline\">Catch up on today’s global news</span>" | grep -Eo "[0-9]+"
-
-# curl -sA "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0" https://edition.cnn.com/  | sed -n '4980,6000p' | grep -Eo "<span class=\"container__headline-text\" data-editable=\"headline\">[^<]+" | sed -n '1,8p' | cut -c 65-
+# curl -sA "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0" https://finance.yahoo.com/ | grep -Eo "\"regularMarketPrice\":{\"raw\":[0-9,\.]+" | grep -Eo "[0-9,\.][^,]+"
 
 BLACK=`tput setaf 16`
 RED=`tput setaf 1`
@@ -78,7 +69,7 @@ function get_yahoo_finance_active_tickers()
 {
     yahoo_finance=$(curl -sA "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0" https://finance.yahoo.com/ | grep -Eo "Trending Tickers.+-- HTML_TAG_END")
     active_tickers=$(echo "$yahoo_finance" | grep -Eo "data-symbol=\"[^\"]+" | cut -c 13- | cut -c 2- | sed '2d;3d;5d;6d;8d;9d;11d;12d;14d;15d')
-    active_tickers_value=$(echo "$yahoo_finance" | grep -Eo "class=\"svelte-86injt\">[0-9,\.]+" | cut -c 23- | sed "s/[,]//g")
+    active_tickers_value=$(echo "$yahoo_finance" | grep -Eo "class=\"svelte-gajmj1\">[0-9,\.]+" | cut -c 23- | sed "s/[,]//g")
     active_tickers_perct_change=$(echo "$yahoo_finance" | grep -Eo "class=\"txt-positive svelte-86injt\">\([%0-9\.\+\-]+|class=\"txt-negative svelte-86injt\">\([%0-9\.\+\-]+" | cut -c 37-)
     first_ticker_pct_change=$(echo "$active_tickers_perct_change" | sed '1q;d')
     second_ticker_pct_change=$(echo "$active_tickers_perct_change" | sed '2q;d')
