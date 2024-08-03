@@ -69,8 +69,7 @@ function get_yahoo_finance_active_tickers()
 {
     yahoo_finance=$(curl -sA "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0" https://finance.yahoo.com/ | grep -Eo "Trending Tickers.+-- HTML_TAG_END" )
     active_tickers=$(echo "$yahoo_finance" | grep -Eo "data-symbol=\"[^\"]+" | cut -c 13- | cut -c 2- | sed '2d;3d;5d;6d;8d;9d;11d;12d;14d;15d')
-    active_tickers_value=$(echo "$yahoo_finance" | grep -Eo "data-value=\"[0-9\.,]+" | cut -c 13- | sed -n '1p;2p;3p;6p;7p')
-    echo "value: $active_tickers_value"
+    active_tickers_value=$(echo "$yahoo_finance" | grep -Eo "\"regularMarketPrice\".+data-value=\"[0-9\.,]+" | grep -Eo "data-value=\"[0-9\.,]+" | cut -c 13-) #| sed -n '1p;2p;3p;6p;7p'
     active_tickers_perct_change=$(echo "$yahoo_finance" | grep -Eo "class=\"txt-positive [a-z0-9\-]+\">\([%0-9\.\+\-]+|class=\"txt-negative [a-z0-9\-]+\">\([%0-9\.\+\-]+" | cut -c 37-)
     first_ticker_pct_change=$(echo "$active_tickers_perct_change" | sed '1q;d')
     second_ticker_pct_change=$(echo "$active_tickers_perct_change" | sed '2q;d')
