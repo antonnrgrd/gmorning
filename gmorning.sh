@@ -120,10 +120,10 @@ function get_time_greeting()
 
 function get_current_news()
 {
-    news=$(curl -sA "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0" https://edition.cnn.com/)
-    current_news_line=$(echo "$news" | grep -En "<span class=\"container__headline-text\" data-editable=\"headline\">Catch up on today’s global news </span>" | grep -Eo "[0-9]+")
-    current_news=$(echo "$news" | sed -n "${current_news_line},6000p" | grep -Eo "<span class=\"container__headline-text\" data-editable=\"headline\">[^<]+" | sed -n '3,8p' | cut -c 65-)
-    echo "$current_news"
+    news=$(curl -sA "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0" https://edition.cnn.com/world)
+    current_news_line=$(echo "$news" | grep -En "<span class=\"container__headline-text\" data-editable=\"headline\">" | cut -c 70- | sed 's/.\{7\}$//' | head -n 10 | grep -vE "editable=\"headline\">")
+    #current_news=$(echo "$news" | sed -n "${current_news_line},6000p" | grep -Eo "<span class=\"container__headline-text\" data-editable=\"headline\">[^<]+" | sed -n '3,8p' | cut -c 65-)
+    echo "$current_news_line"
 }
 
 function gmorning ()
