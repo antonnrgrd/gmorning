@@ -89,12 +89,12 @@ function get_yahoo_finance_active_tickers()
 
 function map_percentchange_to_color()
 {
-    if [[ "$1" =~ "+" ]]; then
-	echo -e "$GREEN$1$NOCOLOR"
-    elif [[ "$1" =~ "-" ]]; then
+  #  if [[ "$1" =~ "+" ]]; then
+#	echo -e "$GREEN$1$NOCOLOR"
+     if [[ "$1" =~ "-" ]]; then
 	echo -e "$RED$1$NOCOLOR"
     else
-	echo "$1"
+	echo -e "$GREEN+$1$NOCOLOR"
     fi
 }
 function get_time_greeting()
