@@ -67,7 +67,7 @@ function map_weather_to_color()
 
 function get_yahoo_finance_active_tickers()
 {
-    yahoo_finance=$(curl -sA "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0" https://finance.yahoo.com/ | grep -Eo "fin-trending-tickers.+-- HTML_TAG_END" )
+    yahoo_finance=$(curl -sA "Mozilla/5.0 (Windows NT 10.0; Win64; x64;" https://finance.yahoo.com/ | grep -Eo "fin-trending-tickers.+-- HTML_TAG_END" )
     active_tickers=$(echo "$yahoo_finance" | grep -Eo "symbol\":\"[\^A-Z\.\-]+\"" | cut -c 10- |  sed 's/.\{1\}$//' | head -n 5)
     active_tickers_value=$(echo "$yahoo_finance" |  grep -Eo "regularMarketPrice\":{\"raw\":[0-9\.,]+," | cut -c 28- |  sed 's/.\{1\}$//') 
     active_tickers_perct_change=$(echo "$yahoo_finance" | grep -Eo "regularMarketChangePercent\":{\"raw\":(-[\.,0-9]+|[\.,0-9]+),\"fmt\":\"(-[\.,0-9]+|[\.,0-9]+)%" | grep -Eo "\fmt\".+" | cut -c 7-)
